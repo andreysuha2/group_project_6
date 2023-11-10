@@ -43,17 +43,29 @@ class Notebook(UserDict):
             self.save_notes()
 
     def search(self, filter):
+        lower_filter = filter.lower()
         return "\n".join(
             f'ID: {note_id}, Note: {note}' 
             for note_id, note in self.data.items() 
-            if note.match(filter)
+            if self.is_match(note, lower_filter)
         )
 
-    def save_notes(self):
-        with open('noteBook.json', 'w') as file:
-            json.dump({'notes': {note_id: self.note_to_dict(note) for note_id, note in self.data.items()},
-                       'next_id': self.note_id+1}, file, indent=4)
+    @staticmethod
+    def is_match(note, filter):
+        # Check both the memo and tags for a partial, case-insensitive match
+        return filter in note.memo.lower() or any(filter in tag.lower() for tag in note.tags)
 
+    def save_notes(self):
+        # Path to the directory of the current file
+        current_dir = Path(__file__).parent
+
+        # Path to the 'noteBook.json' file in the same directory
+        file_path = current_dir / 'noteBook.json'
+
+        with open(file_path, 'w') as file:
+            json.dump({'notes': {note_id: self.note_to_dict(note) for note_id, note in self.data.items()},
+                    'next_id': self.note_id+1}, file, indent=4)
+        
     @staticmethod
     def note_to_dict(note):
         # Метод для конвертації об'єкта Note в словник
@@ -64,8 +76,13 @@ class Notebook(UserDict):
         }
 
     def load_notes(self):
+         # Path to the directory of the current file
+        current_dir = Path(__file__).parent
+
+        # Path to the 'noteBook.json' file in the same directory
+        file_path = current_dir / 'noteBook.json'
         try:
-            with open('noteBook.json', 'r') as file:
+            with open(file_path, 'r') as file:
                 notebook_data = json.load(file)
                 self.data = {}
                 for note_id, note_attrs in notebook_data['notes'].items():
@@ -125,11 +142,12 @@ class Notebook(UserDict):
 if __name__ == "__main__":
     # Приклад використання класу Notebook
     notebook = Notebook()
-    note1 = Note("My first note #example")
+    note1 = Note("My first note #example1")
     notebook.add(note1)
-    note2 = Note("My first 2 note #example")
+    note2 = Note("My first 2 note #example2")
     notebook.add(note2)
-    note3 = Note("My first 3 0 note #example")
+    note3 = Note("My first 3 0 note #exemple3")
     notebook.add(note3)
-    print(notebook.search("exemple2"))  # Пошук нотатки за тегом або змістом
+    print(notebook.search("ex"))  # Пошук нотатки за тегом або змістом
     #notebook.modify()
+    notebook.delete(1)
