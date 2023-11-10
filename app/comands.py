@@ -142,6 +142,14 @@ def show_all(*args):
     else:
         output += "Contacts are empty"
         return output
+
+# def birthdays_range(*args):
+#     print(args)
+#     for el in ADDRESS_BOOK:
+#         print(el[2])
+#     # print(ADDRESS_BOOK[0])
+#     return f'end'
+
     
 @input_error    
 def help(*args):
@@ -187,5 +195,6 @@ HANDLERS = {
     "remove contact": remove_contact,
     "days to birthday": days_to_birthday,
     "show all": show_all,
+    # "birthdays range": birthdays_range,
     "help": help
 }
