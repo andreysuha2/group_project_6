@@ -49,5 +49,12 @@ class AddressBook(UserDict):
         if name in self.data:
             return self.data[name]
         
+    def get_birthdays(self):
+        list_with_birtdays = []
+        for _, val in self.data.items():
+            if val.birthday:
+                list_with_birtdays.append(val)
+        return list_with_birtdays
+    
     def __iter__(self) -> Iterator:
         return AddressBookGenerator(self.CONTACTS_PER_PAGE, self.data)

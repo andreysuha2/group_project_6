@@ -1,6 +1,7 @@
 from app.AddressBook import AddressBook
 from app.Fields import NameField, PhoneField, BirthdayField, Exceptions
 from app.Record import Record
+from datetime import datetime, timedelta
 
 ADDRESS_BOOK = AddressBook(2)
 
@@ -107,6 +108,7 @@ def remove_phone(*args):
 @input_error
 def remove_contact(*args):
     name = args[0]
+    print(name)
     if name in ADDRESS_BOOK:
         ADDRESS_BOOK.pop(name)
         return f'Contact "{name}" removed from address book'
@@ -143,12 +145,29 @@ def show_all(*args):
         output += "Contacts are empty"
         return output
 
-# def birthdays_range(*args):
-#     print(args)
-#     for el in ADDRESS_BOOK:
-#         print(el[2])
-#     # print(ADDRESS_BOOK[0])
-#     return f'end'
+@input_error
+def birthdays_range(*args):
+    current_list = []
+    users_range = timedelta(days=int(args[0]))
+    today_date = datetime.now().date()
+    max_date = today_date + users_range
+    birthdays_list = ADDRESS_BOOK.get_birthdays()
+    for i in birthdays_list:
+        date_formated = datetime.strptime(i.birthday.value, '%d-%m-%Y').date()
+        if (date_formated.month < today_date.month) or (date_formated.month == today_date.month and date_formated.day <= today_date.day):
+            date_formated = datetime.strptime(i.birthday.value, '%d-%m-%Y').date().replace(year=today_date.year + 1)
+        else:
+            date_formated = datetime.strptime(i.birthday.value, '%d-%m-%Y').date().replace(year=today_date.year)
+        if today_date < date_formated <= max_date:
+            current_list.append(i)
+    if current_list:
+        print(f'In the range from {today_date} to {max_date} birthdays has next user(s):')
+        for user in current_list:
+            print(user)
+    else:
+        print(f'There is no birthdays in next {args[0]} days.')
+
+    return 'Please, enter next command.'
 
     
 @input_error    
@@ -195,6 +214,6 @@ HANDLERS = {
     "remove contact": remove_contact,
     "days to birthday": days_to_birthday,
     "show all": show_all,
-    # "birthdays range": birthdays_range,
+    "birthdays range": birthdays_range,
     "help": help
 }
