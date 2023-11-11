@@ -3,7 +3,7 @@ from app.Fields import NameField, PhoneField, BirthdayField, Exceptions
 from app.Record import Record
 from datetime import datetime, timedelta
 
-ADDRESS_BOOK = AddressBook(2)
+ADDRESS_BOOK = AddressBook(5)
 
 def input_error(handler):
     def inner(args):
@@ -93,7 +93,7 @@ def change(*args):
     return f'Contact with name "{name}" doesn\'t exist.'
 
 @input_error
-def phones (*args):
+def show_info (*args):
     name = args[0]
     return ADDRESS_BOOK.get_record(name) or f'Contact with name "{name}" doesn\'t exist.'
 
@@ -175,8 +175,8 @@ def help(*args):
     return """
         --- CONTACTS HELP ---
         syntax: add contact {name} {phone(s)}
-        description: adding number to contacts list 
-        example: add contact ivan +380999999999 +380777777777
+        description: adding number and birthday(optional) to contacts list 
+        example: add contact ivan +380999999999 +380777777777 01-01-1990
 
         syntax: add phones {name} {phone(s)}
         description: adding number to contacts list 
@@ -186,9 +186,9 @@ def help(*args):
         description: changing phone number for contact
         example: change ivan +380777777777 +380999999999
 
-        syntax: phones {name}
-        description: finding phones numbers by contact name
-        example: phones ivan
+        syntax: info {name}
+        description: finding all info by contact name
+        example: info ivan
 
         syntax: remove contact {name}
         description: removing contact from contacts list
@@ -201,6 +201,10 @@ def help(*args):
         syntax: show all
         description: showing list of contacts
         example: show all
+
+        syntax: birthdays range {X - number of days}
+        description: show all contacts during next X days
+        example: birthdays range 10
     """
 
 CLOSE_COMANDS = ("good bye", "close", "exit")
@@ -209,7 +213,7 @@ HANDLERS = {
     "add contact": add_contact,
     "add phones": add_phones,
     "change": change,
-    "phones": phones,
+    "info": show_info,
     "remove phone": remove_phone,
     "remove contact": remove_contact,
     "days to birthday": days_to_birthday,
