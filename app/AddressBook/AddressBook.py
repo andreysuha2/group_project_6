@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Optional
 from collections import UserDict
 from app.Record import Record
-from app.Fields import NameField, PhoneField, BirthdayField, MailField
+from app.Fields import NameField, PhoneField, BirthdayField, MailField, AdressField
 from .AddressBookGenerator import AddressBookGenerator
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -26,7 +26,8 @@ class AddressBook(UserDict):
             phones = [PhoneField(phone) for phone in fields["phones"]]
             mails = [MailField(mail) for mail in fields["mails"]]
             birthday = BirthdayField(fields["birthday"]) if fields["birthday"] else None
-            record = Record(name_field, phones, birthday, mails)
+            adress = AdressField(fields["adress"]) if fields["adress"] else None
+            record = Record(name_field, phones, birthday, mails, adress)
             self.add_record(record)
 
     def search(self, search_str: str):
@@ -36,8 +37,9 @@ class AddressBook(UserDict):
         dictionary = {}
         for record in self.data.values():
             dictionary[record.name.value] = {
-                "phones": [ phone.value for phone in record.phones ],
-                "birthday": record.birthday.value if record.birthday else None ,
+                "phones": [phone.value for phone in record.phones],
+                "birthday": record.birthday.value if record.birthday else None,
+                "adress": record.adress.value if record.adress else None,
                 "mails": [mail.value for mail in record.mails] if len(record.mails)>0 else []
             }
         with open(DICTIONARY_PATH, "w") as dictionary_file:
