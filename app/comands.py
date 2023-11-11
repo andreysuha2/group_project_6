@@ -110,7 +110,6 @@ def change(*args):
 @input_error
 def delete_note(*args):
     note_id = int(args[0])
-    print (note_id)
     if note_id in NOTEBOOK.data:
         NOTEBOOK.delete(note_id)
         return 'Note deleted'
@@ -207,9 +206,9 @@ def birthdays_range(*args):
 
     return 'Please, enter next command.'
 
-    
+@input_error    
 def modify_note(*args):
-   
+    
     note_id = int(args[0])
     
     new_content = ' '.join(str(arg) for arg in args[1:])
@@ -258,6 +257,24 @@ def help(*args):
         syntax: birthdays range {X - number of days}
         description: show all contacts during next X days
         example: birthdays range 10
+
+        --- NOTES HELP ---
+
+        syntax: add note {note} {#hashtag}
+        description: This function creates a new note
+        example: add note Tim birthday #holiday
+
+        syntax: delete note {ID}
+        description: This function deletes a note by it`s ID
+        example: delete note 5
+
+        syntax: searh note {text or tag}
+        description: This function searches for notes by part or all word
+        example: search birthday
+
+        syntax: change note {ID} {new note} {#new tag}
+        description: This function modifies a note by it`s ID
+        example: change note 5 Greg birthday #birthday
     """
 
 
@@ -314,7 +331,7 @@ HANDLERS = {
     "add phones": add_phones,
     "add birthday": add_birthday,
     "add mail": add_mail,
-    "change": change,
+    "change phone": change,
     "info": show_info,
     "remove phone": remove_phone,
     "remove contact": remove_contact,
