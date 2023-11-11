@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Optional
 from collections import UserDict
 from app.Record import Record
-from app.Fields import NameField, PhoneField, BirthdayField, MailField, AdressField
+from app.Fields import NameField, PhoneField, BirthdayField
 from .AddressBookGenerator import AddressBookGenerator
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -23,11 +23,9 @@ class AddressBook(UserDict):
             print('Dictionary file not found, file will be create when you finishing your work!')
         for name, fields in dictionary.items():
             name_field = NameField(name)
-            phones = [PhoneField(phone) for phone in fields["phones"]]
-            mails = [MailField(mail) for mail in fields["mails"]]
+            phones = [ PhoneField(phone) for phone in fields["phones"] ]
             birthday = BirthdayField(fields["birthday"]) if fields["birthday"] else None
-            adress = AdressField(fields["adress"]) if fields["adress"] else None
-            record = Record(name_field, phones, birthday, mails, adress)
+            record = Record(name_field, phones, birthday)
             self.add_record(record)
 
     def search(self, search_str: str):
@@ -37,28 +35,19 @@ class AddressBook(UserDict):
         dictionary = {}
         for record in self.data.values():
             dictionary[record.name.value] = {
-                "phones": [phone.value for phone in record.phones],
-                "birthday": record.birthday.value if record.birthday else None,
-                "adress": record.adress.value if record.adress else None,
-                "mails": [mail.value for mail in record.mails] if len(record.mails)>0 else []
+                "phones": [ phone.value for phone in record.phones ],
+                "birthday": record.birthday.value if record.birthday else None 
             }
         with open(DICTIONARY_PATH, "w") as dictionary_file:
             json.dump(dictionary, dictionary_file) 
 
     def add_record(self, record: Record) -> None:
-        # if not record.name.value in self.data:
-        self.data[record.name.value] = record
+        if not record.name.value in self.data:
+            self.data[record.name.value] = record
 
     def get_record(self, name: str) -> Optional[Record]:
         if name in self.data:
             return self.data[name]
         
-    def get_birthdays(self):
-        list_with_birtdays = []
-        for _, val in self.data.items():
-            if val.birthday:
-                list_with_birtdays.append(val)
-        return list_with_birtdays
-    
     def __iter__(self) -> Iterator:
         return AddressBookGenerator(self.CONTACTS_PER_PAGE, self.data)
