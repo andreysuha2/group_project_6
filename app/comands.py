@@ -208,19 +208,11 @@ def birthdays_range(*args):
 
 @input_error    
 def modify_note(*args):
+        
+    NOTEBOOK.modify()
     
-    note_id = int(args[0])
-    
-    new_content = ' '.join(str(arg) for arg in args[1:])
+    return "Note updated successfully."
 
-    if note_id in NOTEBOOK.data:
-        if new_content:
-            NOTEBOOK.modify2(note_id, new_content)
-            return 'Note modified successfully.'
-        else:
-            return 'No new content provided for the note.'
-    else:
-        return 'Note not found with the provided ID.'
     
 @input_error    
 def help(*args):

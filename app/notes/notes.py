@@ -101,6 +101,8 @@ class Notebook(UserDict):
 
     def modify(self):
         try:
+
+        
             # Спершу виведемо список нотаток
             search_query = input("Enter search query to find notes to modify: ")
             matching_notes = self.search(search_query)
@@ -109,23 +111,28 @@ class Notebook(UserDict):
                 return
             print("Matching notes:\n", matching_notes)
 
-            # Запитаємо ID нотатки, яку треба змінити
-            note_id = int(input("Enter the ID of the note to modify: "))
-            if note_id in self.data:
-                # Виведемо існуючий вміст нотатки
-                print("Current note content:")
-                print(self.data[note_id])
+            while True:
+                # Запитаємо ID нотатки, яку треба змінити
+                note_id = int(input("Enter the ID of the note to modify: "))
+                if note_id in self.data:
+                    # Виведемо існуючий вміст нотатки
+                    print("Current note content:")
+                    print(self.data[note_id])
+                    
+                    # Запитаємо новий вміст нотатки
+                    new_memo = input("Enter new content for the note: ")
+                    # Оновимо нотатку
+                    self.data[note_id].memo = self.data[note_id].remove_tags(new_memo, self.data[note_id].tags)
+                    self.data[note_id].tags = self.data[note_id].extract_tags(new_memo)
+                    # Збережемо зміни
+                    self.save_notes()
+                    #print("Note updated successfully.")
+                    break
                 
-                # Запитаємо новий вміст нотатки
-                new_memo = input("Enter new content for the note: ")
-                # Оновимо нотатку
-                self.data[note_id].memo = new_memo
-                self.data[note_id].tags = self.data[note_id].extract_tags(new_memo)
-                # Збережемо зміни
-                self.save_notes()
-                print("Note updated successfully.")
-            else:
-                print("Note ID not found.")
+                else:
+                    print("Note ID not found.")
+                
+
         except ValueError:
             print("Invalid input, please enter a valid number for note ID.")
 
