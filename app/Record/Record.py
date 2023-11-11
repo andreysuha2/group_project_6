@@ -21,7 +21,7 @@ class Record:
         return f"Contact: {self.name.value};\
  phones: {'; '.join(p.value for p in self.phones)}\
 {'; Birthday '+ str(self.birthday.value) if self.birthday else ''}\
-{'; '+str(Record.days_to_birthday(self)) if self.birthday else ''}\
+{'; To birthday '+str(Record.days_to_birthday(self)) if self.birthday else ''}\
 {'; Mail: '+mails if len(mails)>0 else '' }"
 
     def __repr__(self) -> str:
@@ -46,6 +46,12 @@ class Record:
     def add_mail(self, mail: MailField) -> None:
         if mail not in self.mails:
             self.mails.append(mail)
+            return True
+        return False
+
+    def add_birthday(self, birthday: BirthdayField) -> None:
+        if  not self.birthday:
+            self.birthday = birthday
             return True
         return False
 

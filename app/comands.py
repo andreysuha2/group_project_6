@@ -182,7 +182,16 @@ def help(*args):
 
 @input_error
 def add_birthday(*args):
-    pass
+    birthday = args[1]
+    name = args[0]
+    obj = BirthdayField(birthday)
+    if not ADDRESS_BOOK.get_record(name):
+        return name + " not in book" 
+    name = ADDRESS_BOOK.get_record(name)
+    name.add_birthday(obj)
+    ADDRESS_BOOK.add_record(name)
+    return name.name.value + ' add birthday ' + birthday
+
 
 @input_error
 def add_mail(*args):
@@ -197,7 +206,6 @@ def add_mail(*args):
         return name.name.value +" saved with mail " + mail
     name = ADDRESS_BOOK.get_record(name)
     name.add_mail(obj)
-
     ADDRESS_BOOK.add_record(name)
     return name.name.value +' add mail ' + mail
 
