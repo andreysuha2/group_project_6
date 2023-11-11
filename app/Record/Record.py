@@ -15,6 +15,8 @@ class Record:
             return bool(list(filter(lambda phone: item in phone, self.phones)))
         
     def __str__(self) -> str:
+        if self.birthday:
+            return f"{self.name.value}: {'|'.join([ phone.value for phone in self.phones ])}, {self.birthday}"    
         return f"{self.name.value}: {'|'.join([ phone.value for phone in self.phones ])}"
 
     def __repr__(self) -> str:
