@@ -1,9 +1,11 @@
 from app.AddressBook import AddressBook
 from app.Fields import NameField, PhoneField, BirthdayField, Exceptions, MailField, AdressField
 from app.Record import Record
+from app.notes import Notebook, Note
 from datetime import datetime, timedelta
 
 ADDRESS_BOOK = AddressBook(5)
+NOTEBOOK = Notebook()
 
 def input_error(handler):
     def inner(args):
@@ -90,12 +92,31 @@ def add_phones(*args):
     return f'Contact with name {name} doesn\'t exist'
 
 @input_error
+def add_note(*args):
+    
+    note_content = ' '.join(str(arg) for arg in args)
+    new_note = Note(note_content)
+    NOTEBOOK.add(new_note)
+    return 'Note added'
+
+@input_error
 def change(*args):
     name, old_phone, new_phone = args[0], PhoneField(args[1]), PhoneField(args[2])
     record = ADDRESS_BOOK.get_record(name)
     if record:
         return record.update_phone(old_phone, new_phone)
     return f'Contact with name "{name}" doesn\'t exist.'
+
+@input_error
+def delete_note(*args):
+    note_id = int(args[0])
+    print (note_id)
+    if note_id in NOTEBOOK.data:
+        NOTEBOOK.delete(note_id)
+        return 'Note deleted'
+    else:
+        return 'Note not found'
+    
 
 @input_error
 def show_info (*args):
@@ -126,6 +147,18 @@ def days_to_birthday(*args):
         days = ADDRESS_BOOK[name].days_to_birthday()
         return f'{name} birthday in {days} days' if days else f'You haven\'t record about {name} birthday'
     return f'Contact "{name}" does\'t exists in address book'
+
+@input_error
+def search_note(*args):
+   
+    search_query = ' '.join(str(arg) for arg in args)
+
+    if search_query:
+        
+        results = NOTEBOOK.search(search_query)
+        return results if results else 'No matching notes found.'
+    else:
+        return 'No search query provided.'
 
 @input_error
 def show_all(*args):
@@ -174,6 +207,21 @@ def birthdays_range(*args):
 
     return 'Please, enter next command.'
 
+    
+def modify_note(*args):
+   
+    note_id = int(args[0])
+    
+    new_content = ' '.join(str(arg) for arg in args[1:])
+
+    if note_id in NOTEBOOK.data:
+        if new_content:
+            NOTEBOOK.modify2(note_id, new_content)
+            return 'Note modified successfully.'
+        else:
+            return 'No new content provided for the note.'
+    else:
+        return 'Note not found with the provided ID.'
     
 @input_error    
 def help(*args):
@@ -272,6 +320,10 @@ HANDLERS = {
     "remove contact": remove_contact,
     "days to birthday": days_to_birthday,
     "show all": show_all,
+    "add note": add_note,
+    "delete note": delete_note,
+    "find note": search_note,
+    "change note": modify_note
     "birthdays range": birthdays_range,
     "help": help
 }
