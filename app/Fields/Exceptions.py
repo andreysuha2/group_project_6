@@ -8,3 +8,7 @@ class BirthdayValidationError(Exception):
 
 class MailValidationError(Exception):
     pass
+
+
+class AdressValidationError(Exception):
+    pass

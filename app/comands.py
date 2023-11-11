@@ -1,5 +1,5 @@
 from app.AddressBook import AddressBook
-from app.Fields import NameField, PhoneField, BirthdayField, Exceptions, MailField
+from app.Fields import NameField, PhoneField, BirthdayField, Exceptions, MailField, AdressField
 from app.Record import Record
 from datetime import datetime, timedelta
 
@@ -35,6 +35,8 @@ def search(*args):
         for record in result:
             output += f"{record}\n"
     return output
+
+
 
 @input_error
 def add_contact(*args):
@@ -228,17 +230,30 @@ def add_birthday(*args):
 def add_mail(*args):
     mail = args[1]
     name = args[0]
-    mail = mail.lower()  
+    mail = mail.lower()
     obj = MailField(mail)
     if not ADDRESS_BOOK.get_record(name):
         name = Record(name)
         name.add_mail(obj)
         ADDRESS_BOOK.add_record(name)
-        return name.name.value +" saved with mail " + mail
+        return name.name.value + " saved with mail " + mail
     name = ADDRESS_BOOK.get_record(name)
     name.add_mail(obj)
     ADDRESS_BOOK.add_record(name)
-    return name.name.value +' add mail ' + mail
+    return name.name.value + ' add mail ' + mail
+
+
+@input_error
+def add_adress(*args):
+    adress = args[1]
+    name = args[0]
+    obj = AdressField(adress)
+    if not ADDRESS_BOOK.get_record(name):
+        return name + " not in book "
+    name = ADDRESS_BOOK.get_record(name)
+    name.add_adress(obj)
+    ADDRESS_BOOK.add_record(name)
+    return name.name.value + ' add adress  ' + adress
 
 
 
@@ -247,6 +262,7 @@ CLOSE_COMANDS = ("good bye", "close", "exit")
 HANDLERS = {
     "search": search,
     "add contact": add_contact,
+    "add adress": add_adress,
     "add phones": add_phones,
     "add birthday": add_birthday,
     "add mail": add_mail,
