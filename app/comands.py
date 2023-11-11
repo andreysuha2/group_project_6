@@ -1,5 +1,5 @@
 from app.AddressBook import AddressBook
-from app.Fields import NameField, PhoneField, BirthdayField, Exceptions
+from app.Fields import NameField, PhoneField, BirthdayField, Exceptions, MailField
 from app.Record import Record
 
 ADDRESS_BOOK = AddressBook(2)
@@ -19,7 +19,10 @@ def input_error(handler):
             return str(err)
         except Exceptions.BirthdayValidationError as err:
             return str(err)
+        except Exceptions.MailValidationError as err:
+            return str(err)
     return inner
+
 
 @input_error
 def search(*args):
@@ -176,11 +179,38 @@ def help(*args):
         example: show all
     """
 
+
+@input_error
+def add_birthday(*args):
+    pass
+
+@input_error
+def add_mail(*args):
+    mail = args[1]
+    name = args[0]
+    mail = mail.lower()  
+    obj = MailField(mail)
+    if not ADDRESS_BOOK.get_record(name):
+        name = Record(name)
+        name.add_mail(obj)
+        ADDRESS_BOOK.add_record(name)
+        return name.name.value +" saved with mail " + mail
+    name = ADDRESS_BOOK.get_record(name)
+    name.add_mail(obj)
+
+    ADDRESS_BOOK.add_record(name)
+    return name.name.value +' add mail ' + mail
+
+
+
+
 CLOSE_COMANDS = ("good bye", "close", "exit")
 HANDLERS = {
     "search": search,
     "add contact": add_contact,
     "add phones": add_phones,
+    "add birthday": add_birthday,
+    "add mail": add_mail,
     "change": change,
     "phones": phones,
     "remove phone": remove_phone,

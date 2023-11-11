@@ -24,7 +24,6 @@ def main():
     while True:
         try:
             enter_string = (prompt (">>>", completer=completer ))
-            # enter_string = input(">>> ")
             input_handler = get_comand(enter_string)
             is_close = next(input_handler)
             if is_close:
