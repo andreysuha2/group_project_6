@@ -323,7 +323,7 @@ HANDLERS = {
     "add note": add_note,
     "delete note": delete_note,
     "find note": search_note,
-    "change note": modify_note
+    "change note": modify_note,
     "birthdays range": birthdays_range,
     "help": help
 }

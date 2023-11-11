@@ -1,4 +1,11 @@
 # group_project_6
 
-if no 'prompt_toolkit' >>>
-pip install prompt_toolkit
+1. install venv
+
+```pip -m venv virtemv```
+
+2. Activate venv
+
+3. Install packages from requirements.txt
+
+```pip install requirements.txt```
