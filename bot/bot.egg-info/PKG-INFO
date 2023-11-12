@@ -1,5 +1,0 @@
-Metadata-Version: 2.1
-Name: bot
-Version: 0.3.12
-Requires-Dist: wcwidth
-Requires-Dist: prompt_toolkit
