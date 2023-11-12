@@ -28,15 +28,16 @@ def input_error(handler):
 
 
 @input_error
-def search(*args):
-    search_str = args[0]
-    result = ADDRESS_BOOK.search(search_str)
-    output = f'Results for "{search_str}" not found'
-    if len(result):
-        output = f'For "{search_str}" found {len(result)} results:\n'
-        for record in result:
-            output += f"{record}\n"
-    return output
+# iter in book and compare with FIND_text
+def search(text):
+    text = text.lower()
+    if not len(text) > 2:
+        return 'Enter more then 2 simbols to find'
+    list = ''
+    for cont in AddressBook(1):
+        if text in str(cont[2]).lower():
+            list += str(cont[2])[1:-1] + '\r\n'
+    return list if len(list) > 1 else 'Cant find it'
 
 
 
