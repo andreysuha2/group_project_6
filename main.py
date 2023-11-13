@@ -1,6 +1,5 @@
 from prompt_toolkit import prompt
-from prompt_toolkit.completion import WordCompleter
-from prompt_toolkit.styles import Style
+from prompt_toolkit.completion import NestedCompleter
 
 from app.input_handler import get_comand
 from app.comands import HANDLERS, ADDRESS_BOOK
@@ -11,17 +10,18 @@ def close():
 
 # створення списку підказок
 from app.comands import CLOSE_COMANDS
-variants = []  
-variants.extend(list(CLOSE_COMANDS))
+variants = {}
 for i in HANDLERS.keys():
-    variants.append(i)
+    variants[i] = None
+for i in CLOSE_COMANDS:
+    variants[i] = None
 # Створення об'єкта WordCompleter для автодоповнення
-completer = WordCompleter(variants)
+completer = NestedCompleter.from_nested_dict(variants)
 
-GREEN = "\033[92m"
+GREEN = "\033[92m"     #for green greeting
 
 def main():
-    print(f'{GREEN}Hello!!! \r\nYoy can use "help" comand ')
+    print(f'{GREEN}\r\nHello!!! \r\nYoy can use "help" comand ')
     while True:
         try:
             enter_string = (prompt (">>>", completer=completer ))
