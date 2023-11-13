@@ -1,7 +1,7 @@
-from app.AddressBook import AddressBook
-from app.Fields import NameField, PhoneField, BirthdayField, Exceptions, MailField, AdressField
-from app.Record import Record
-from app.notes import Notebook, Note
+from bot.app.AddressBook import AddressBook
+from bot.app.Fields import NameField, PhoneField, BirthdayField, Exceptions, MailField, AdressField
+from bot.app.Record import Record
+from bot.app.notes import Notebook, Note
 from datetime import datetime, timedelta
 
 ADDRESS_BOOK = AddressBook(5)

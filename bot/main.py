@@ -3,15 +3,14 @@ from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.styles import Style
 
-from app.input_handler import get_comand
-from app.comands import HANDLERS, ADDRESS_BOOK
+from bot.app.input_handler import get_comand
+from bot.app.comands import HANDLERS, ADDRESS_BOOK, CLOSE_COMANDS
 
 def close():
     ADDRESS_BOOK.save_book()
     print("Thank you! Your dictionary is saved")
 
 # створення списку підказок
-from app.comands import CLOSE_COMANDS
 variants = []  
 variants.extend(list(CLOSE_COMANDS))
 for i in HANDLERS.keys():

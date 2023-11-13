@@ -1,5 +1,5 @@
 import re
-from app.comands import HANDLERS, CLOSE_COMANDS
+from bot.app.comands import HANDLERS, CLOSE_COMANDS
 
 def has_comand(entry_comand, comands_list):
         has_comand = None
