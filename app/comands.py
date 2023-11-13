@@ -3,6 +3,7 @@ from app.Fields import NameField, PhoneField, BirthdayField, Exceptions, MailFie
 from app.Record import Record
 from app.notes import Notebook, Note
 from datetime import datetime, timedelta
+from app.sort_file import SortFile
 
 ADDRESS_BOOK = AddressBook(5)
 NOTEBOOK = Notebook()
@@ -313,8 +314,11 @@ def add_adress(*args):
     ADDRESS_BOOK.add_record(name)
     return name.name.value + ' add adress  ' + adress
 
-
-
+@input_error
+def sort_file(default_path):
+    organizer = SortFile(default_path)
+    organizer.create_directories(organizer.DEFAULT_PATH)
+    organizer.arrange(organizer.DEFAULT_PATH)
 
 CLOSE_COMANDS = ("good bye", "close", "exit")
 HANDLERS = {
@@ -335,5 +339,6 @@ HANDLERS = {
     "find note": search_note,
     "change note": modify_note,
     "birthdays range": birthdays_range,
+    "sort-file": sort_file,
     "help": help
 }
