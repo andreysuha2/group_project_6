@@ -24,7 +24,7 @@ def main():
     print(f'{GREEN}\r\nHello!!! \r\nYoy can use "help" comand ')
     while True:
         try:
-            enter_string = (prompt (">>>", completer=completer ))
+            enter_string = (prompt (">>>", completer=completer )).strip()
             input_handler = get_comand(enter_string)
             is_close = next(input_handler)
             if is_close:
