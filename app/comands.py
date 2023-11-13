@@ -29,7 +29,7 @@ def input_error(handler):
 
 @input_error
 # iter in book and compare with FIND_text
-def search(text):
+def search(text = ''):
     text = text.lower()
     if not len(text) > 2:
         return 'Enter more then 2 simbols to find'

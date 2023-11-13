@@ -1,4 +1,3 @@
-# pip install prompt_toolkit
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.styles import Style
@@ -19,8 +18,10 @@ for i in HANDLERS.keys():
 # Створення об'єкта WordCompleter для автодоповнення
 completer = WordCompleter(variants)
 
+GREEN = "\033[92m"
 
 def main():
+    print(f'{GREEN}Hello!!! \r\nYoy can use "help" comand ')
     while True:
         try:
             enter_string = (prompt (">>>", completer=completer ))
