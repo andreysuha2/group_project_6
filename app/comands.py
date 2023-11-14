@@ -1,8 +1,9 @@
-from app.AddressBook import AddressBook
-from app.Fields import NameField, PhoneField, BirthdayField, Exceptions, MailField, AdressField
-from app.Record import Record
-from app.notes import Notebook, Note
+from .AddressBook import AddressBook
+from .Fields import NameField, PhoneField, BirthdayField, Exceptions, MailField, AdressField
+from .Record import Record
+from .notes import Notebook, Note
 from datetime import datetime, timedelta
+from .sort_file import SortFile
 
 ADDRESS_BOOK = AddressBook(5)
 NOTEBOOK = Notebook()
@@ -28,15 +29,16 @@ def input_error(handler):
 
 
 @input_error
-def search(*args):
-    search_str = args[0]
-    result = ADDRESS_BOOK.search(search_str)
-    output = f'Results for "{search_str}" not found'
-    if len(result):
-        output = f'For "{search_str}" found {len(result)} results:\n'
-        for record in result:
-            output += f"{record}\n"
-    return output
+# iter in book and compare with FIND_text
+def search(text = ''):
+    text = text.lower()
+    if not len(text) > 2:
+        return 'Enter more then 2 simbols to find'
+    list = ''
+    for cont in AddressBook(1):
+        if text in str(cont[2]).lower():
+            list += str(cont[2])[1:-1] + '\r\n'
+    return list if len(list) > 1 else 'Cant find it'
 
 
 
@@ -213,63 +215,6 @@ def modify_note(*args):
     
     return "Note updated successfully."
 
-    
-@input_error    
-def help(*args):
-    return """
-        --- CONTACTS HELP ---
-        syntax: add contact {name} {phone(s)}
-        description: adding number and birthday(optional) to contacts list 
-        example: add contact ivan +380999999999 +380777777777 01-01-1990
-
-        syntax: add phones {name} {phone(s)}
-        description: adding number to contacts list 
-        example: add phones ivan +380999999999 +380777777777
-
-        syntax: change {name} {old_phone_number} {new_phone_number}
-        description: changing phone number for contact
-        example: change ivan +380777777777 +380999999999
-
-        syntax: info {name}
-        description: finding all info by contact name
-        example: info ivan
-
-        syntax: remove contact {name}
-        description: removing contact from contacts list
-        example: remove ivan
-
-        syntax: remove phone {name} {phone_number}
-        description: removing contact from contacts list
-        example: remove ivan +380999999999
-
-        syntax: show all
-        description: showing list of contacts
-        example: show all
-
-        syntax: birthdays range {X - number of days}
-        description: show all contacts during next X days
-        example: birthdays range 10
-
-        --- NOTES HELP ---
-
-        syntax: add note {note} {#hashtag}
-        description: This function creates a new note
-        example: add note Tim birthday #holiday
-
-        syntax: delete note {ID}
-        description: This function deletes a note by it`s ID
-        example: delete note 5
-
-        syntax: searh note {text or tag}
-        description: This function searches for notes by part or all word
-        example: search birthday
-
-        syntax: change note {ID} {new note} {#new tag}
-        description: This function modifies a note by it`s ID
-        example: change note 5 Greg birthday #birthday
-    """
-
-
 @input_error
 def add_birthday(*args):
     birthday = args[1]
@@ -290,10 +235,7 @@ def add_mail(*args):
     mail = mail.lower()
     obj = MailField(mail)
     if not ADDRESS_BOOK.get_record(name):
-        name = Record(name)
-        name.add_mail(obj)
-        ADDRESS_BOOK.add_record(name)
-        return name.name.value + " saved with mail " + mail
+        return name + " not in book"
     name = ADDRESS_BOOK.get_record(name)
     name.add_mail(obj)
     ADDRESS_BOOK.add_record(name)
@@ -312,14 +254,94 @@ def add_adress(*args):
     ADDRESS_BOOK.add_record(name)
     return name.name.value + ' add adress  ' + adress
 
+@input_error
+def sort_file(*args):
+    default_path = args[0]
+    organizer = SortFile(default_path)
+    organizer.create_directories(organizer.DEFAULT_PATH)
+    organizer.arrange(organizer.DEFAULT_PATH)
+    return f"folder {default_path} sorted."
 
+@input_error    
+def help(*args):
+    return """
+        --- CONTACTS HELP ---
+        syntax: search {query_string}
+        description: searching contact by any field
+        example: search Ivan
+        
+        syntax: add contact {name} {phone(s)}
+        description: adding number and birthday(optional) to contacts list 
+        example: add contact ivan +380999999999 +380777777777 01-01-1990
+        
+        syntax: add address {name} {address}
+        description: adding address to contact name 
+        example: add address ivan Kyiv
+        
+        syntax: add birthday {name} {birthday}
+        description: add birthday to contact name 
+        example: add birthday Ivan 01-01-1970
+        
+        syntax: add mail {name} {email}
+        description: add mail to contact name
+        example: add mail Ivan ivan@mail.com
 
+        syntax: add phones {name} {phone(s)}
+        description: adding number to contacts list 
+        example: add phones ivan +380999999999 +380777777777
+
+        syntax: change phone {name} {old_phone_number} {new_phone_number}
+        description: changing phone number for contact
+        example: change phone ivan +380777777777 +380999999999
+
+        syntax: info {name}
+        description: finding all info by contact name
+        example: info ivan
+
+        syntax: remove contact {name}
+        description: removing contact from contacts list
+        example: remove ivan
+
+        syntax: remove phone {name} {phone_number}
+        description: removing contact from contacts list
+        example: remove ivan +380999999999
+
+        syntax: show all
+        description: showing list of contacts
+        example: show all
+
+        syntax: birthdays range {X - number of days}
+        description: show all contacts during next X days
+        example: birthdays range 10
+        
+        syntax: days to birthday {name}
+        description: show count days to name birthday
+        example: days to birthday Ivan
+
+        --- NOTES HELP ---
+
+        syntax: add note {note} {#hashtag}
+        description: This function creates a new note
+        example: add note Tim birthday #holiday
+
+        syntax: delete note {ID}
+        description: This function deletes a note by it`s ID
+        example: delete note 5
+
+        syntax: searh note {text or tag}
+        description: This function searches for notes by part or all word
+        example: search birthday
+
+        syntax: change note
+        description: This function modifies a note by it`s ID
+        example: change note
+    """
 
 CLOSE_COMANDS = ("good bye", "close", "exit")
 HANDLERS = {
     "search": search,
     "add contact": add_contact,
-    "add adress": add_adress,
+    "add address": add_adress,
     "add phones": add_phones,
     "add birthday": add_birthday,
     "add mail": add_mail,
@@ -334,5 +356,6 @@ HANDLERS = {
     "find note": search_note,
     "change note": modify_note,
     "birthdays range": birthdays_range,
+    "sort-file": sort_file,
     "help": help
 }

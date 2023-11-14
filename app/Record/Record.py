@@ -17,10 +17,10 @@ class Record:
             return bool(list(filter(lambda phone: item in phone, self.phones)))
         
     def __str__(self) -> str:
-        # return f"{self.name.value}: {'|'.join([ phone.value for phone in self.phones ])}"
+
         mails = '; '.join(m.value for m in self.mails)
-        return f"Contact: {self.name.value};\
- phones: {'; '.join(p.value for p in self.phones)}\
+        return f"Contact: {self.name.value}; \
+phones: {'; '.join(p.value for p in self.phones)}\
 {'; Birthday '+ str(self.birthday.value) if self.birthday else ''}\
 {'; To birthday: '+str(Record.days_to_birthday(self))+' days' if self.birthday else ''}\
 {'; Adress: '+ str(self.adress.value) if self.adress else ''}\
