@@ -235,10 +235,7 @@ def add_mail(*args):
     mail = mail.lower()
     obj = MailField(mail)
     if not ADDRESS_BOOK.get_record(name):
-        name = Record(name)
-        name.add_mail(obj)
-        ADDRESS_BOOK.add_record(name)
-        return name.name.value + " saved with mail " + mail
+        return name + " not in book"
     name = ADDRESS_BOOK.get_record(name)
     name.add_mail(obj)
     ADDRESS_BOOK.add_record(name)
