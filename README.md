@@ -1,16 +1,16 @@
-# group_project_6
+# GROUP_6.py BOT
 
-1. install venv
+To use the BOT you need to:
 
-```pip -m venv virtemv```
+1. Download it [**here**](https://github.com/andreysuha2/group_project_6/releases/tag/assistant)
+2. To install it, you need to run the following command in the source folder: 
+        pip install assistant-1.2.2-py3-none-any.whl or py/python3 -m pip install assistant-1.2.2-py3-none-any.whl.
+3. To run the bot, just type the command "assistant".
+<br/>
+<br/>
 
-2. Activate venv
 
-3. Install packages from requirements.txt
-
-```pip install requirements.txt```
-      
-        --- CONTACTS HELP ---
+# --- CONTACTS HELP ---
 
         syntax: search {query_string}
         description: searching contact by any field
