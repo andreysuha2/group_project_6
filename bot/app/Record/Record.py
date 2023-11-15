@@ -1,6 +1,6 @@
 from typing import Optional
 from datetime import datetime
-from app.Fields import NameField, PhoneField, BirthdayField, MailField, AdressField
+from bot.app.Fields import NameField, PhoneField, BirthdayField, MailField, AdressField
 
 class Record:
     def __init__(self, name: NameField, phones: list[PhoneField] = [], birthday: BirthdayField = None, mails: list[MailField] = [], adress: AdressField = None ) -> None:

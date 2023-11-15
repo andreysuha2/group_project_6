@@ -3,3 +3,6 @@
 .vscode/*
 **/test_folder
 virtemv/
+.venv/
+build/
+assistant.egg-info/

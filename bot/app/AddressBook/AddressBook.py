@@ -4,8 +4,8 @@ import os
 from pathlib import Path
 from typing import Optional
 from collections import UserDict
-from app.Record import Record
-from app.Fields import NameField, PhoneField, BirthdayField, MailField, AdressField
+from bot.app.Record import Record
+from bot.app.Fields import NameField, PhoneField, BirthdayField, MailField, AdressField
 from .AddressBookGenerator import AddressBookGenerator
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))

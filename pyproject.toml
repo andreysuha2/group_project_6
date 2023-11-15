@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "assistant"
+version = "1.2.2"
+authors = [
+    {name = "group_06.py"},
+]
+description = "A bot to help you with your address book"
+readme = "README.md"

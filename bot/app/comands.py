@@ -181,7 +181,7 @@ def show_all(*args):
                     break
         return "Address book is closed"
     else:
-        output += "Contacts are empty"
+        output = "Contacts are empty"
         return output
 
 @input_error
